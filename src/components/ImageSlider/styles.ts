@@ -2,11 +2,11 @@ import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 
 interface ImageIndexProps {
-  active?: boolean;
+  active: boolean;
 }
 
 export const Container = styled.View`
-  flex: 1;
+  width: 100%;
 `;
 
 export const ImageIndexes = styled.View`
