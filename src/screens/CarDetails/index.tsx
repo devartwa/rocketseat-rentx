@@ -38,7 +38,7 @@ export function CarDetails() {
       </Header>
 
       <ImageSliderWrapper>
-        <ImageSlider imagesUrl={['https://freepngimg.com/thumb/audi/35227-5-audi-rs5-red.png']} />
+        <ImageSlider imagesUrl={['https://lh3.googleusercontent.com/proxy/0MLgLBYfMnDpt2FywdB7AyHEuZMYh5sSMg9k0HbwFQeijG0NqXvTufTK8sUfSP2l2MPP-mGS9klqLt7LSbR6WtdNTDzwbDDqiXW02MSLBHp_N_o6SG18zF1D4Y362Go']} />
       </ImageSliderWrapper>
 
       <Content>
