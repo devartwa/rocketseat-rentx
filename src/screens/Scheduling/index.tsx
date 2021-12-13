@@ -4,6 +4,8 @@ import { StatusBar } from 'react-native';
 import { BackButton } from '../../components/BackButton';
 import { Button } from '../../components/Button';
 import { Calendar } from '../../components/Calendar';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { MainParamList } from '../../@types';
 
 import ArrowSvg from '../../assets/arrow.svg';
 
@@ -20,9 +22,20 @@ import {
   Footer
 } from './styles';
 
-export function Scheduling() {
+type SchedulingNavigationProp = StackNavigationProp<MainParamList, 'Scheduling'>;
+type SchedulingProps = { navigation: SchedulingNavigationProp };
+
+export function Scheduling({ navigation }: SchedulingProps) {
 
   const theme = useTheme();
+
+  const handleGoBack = () => {
+    navigation.goBack();
+  }
+
+  const handleConfirmRental = () => {
+    navigation.navigate('SchedulingDetails');
+  }
 
   return (
     <Container>
@@ -33,6 +46,7 @@ export function Scheduling() {
           backgroundColor="transparent"
         />
         <BackButton
+          onPress={handleGoBack}
           color={theme.colors.shape}
         />
 
@@ -71,7 +85,7 @@ export function Scheduling() {
       <Footer>
         <Button
           title="Confirmar"
-          onPress={() => { }}
+          onPress={handleConfirmRental}
         />
       </Footer>
     </Container>

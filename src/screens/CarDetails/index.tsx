@@ -4,6 +4,8 @@ import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
 import { Acessory } from '../../components/Acessory';
 import { Button } from '../../components/Button';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { MainParamList } from '../../@types';
 
 //Icons
 import speedSvg from '../../assets/speed.svg'
@@ -29,16 +31,30 @@ import {
   Acessories,
   Footer,
 } from './styles';
+import { StatusBar } from 'react-native';
 
-export function CarDetails() {
+type CarDetailsNavigationProp = StackNavigationProp<MainParamList, 'CarDetails'>;
+type CarDetailsProps = { navigation: CarDetailsNavigationProp };
+
+export function CarDetails({ navigation }: CarDetailsProps) {
+
+  const handleGoBack = () => {
+    navigation.goBack();
+  }
+
+  const handleConfirmRental = () => {
+    navigation.navigate('Scheduling');
+  }
+
   return (
     <Container>
+      <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
       <Header>
-        <BackButton onPress={() => { }} />
+        <BackButton onPress={handleGoBack} />
       </Header>
 
       <ImageSliderWrapper>
-        <ImageSlider imagesUrl={['https://lh3.googleusercontent.com/proxy/0MLgLBYfMnDpt2FywdB7AyHEuZMYh5sSMg9k0HbwFQeijG0NqXvTufTK8sUfSP2l2MPP-mGS9klqLt7LSbR6WtdNTDzwbDDqiXW02MSLBHp_N_o6SG18zF1D4Y362Go']} />
+        <ImageSlider imagesUrl={['https://lh3.googleusercontent.com/proxy/fDKLY20Z0ZLQry7cA5fgx6-RgeS0Rw98ID1vP76JCi924487T8SuhKwsP_Zco7AN0VZnsZW4I_IS-XZUzuepGexDRhx7lJPeMNTxKBnQor_N731xitqmWE7I4RYEmhU']} />
       </ImageSliderWrapper>
 
       <Content>
@@ -69,7 +85,7 @@ export function CarDetails() {
       </Content>
 
       <Footer>
-        <Button title="Confirmar" onPress={() => { }} />
+        <Button title="Escolher período do aluguel" onPress={handleConfirmRental} />
       </Footer>
     </Container>
   );

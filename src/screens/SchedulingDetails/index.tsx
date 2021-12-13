@@ -7,6 +7,8 @@ import { Button } from '../../components/Button';
 import { useTheme } from 'styled-components';
 import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { MainParamList } from '../../@types';
 
 //Icons
 import speedSvg from '../../assets/speed.svg'
@@ -42,9 +44,16 @@ import {
   RentalPriceTotal
 } from './styles';
 
-export function SchedulingDetails() {
+type SchedulingDetailsNavigationProp = StackNavigationProp<MainParamList, 'SchedulingDetails'>;
+type SchedulingDetailsProps = { navigation: SchedulingDetailsNavigationProp };
 
+export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
   const theme = useTheme();
+
+  const handleConfirmRental = () => {
+    navigation.navigate('SchedulingComplete');
+  }
+
   return (
     <Container>
       <Header>
@@ -52,7 +61,7 @@ export function SchedulingDetails() {
       </Header>
 
       <ImageSliderWrapper>
-        <ImageSlider imagesUrl={['https://lh3.googleusercontent.com/proxy/0MLgLBYfMnDpt2FywdB7AyHEuZMYh5sSMg9k0HbwFQeijG0NqXvTufTK8sUfSP2l2MPP-mGS9klqLt7LSbR6WtdNTDzwbDDqiXW02MSLBHp_N_o6SG18zF1D4Y362Go']} />
+        <ImageSlider imagesUrl={['https://lh3.googleusercontent.com/proxy/fDKLY20Z0ZLQry7cA5fgx6-RgeS0Rw98ID1vP76JCi924487T8SuhKwsP_Zco7AN0VZnsZW4I_IS-XZUzuepGexDRhx7lJPeMNTxKBnQor_N731xitqmWE7I4RYEmhU']} />
       </ImageSliderWrapper>
 
       <Content>
@@ -105,7 +114,7 @@ export function SchedulingDetails() {
       </Content>
 
       <Footer>
-        <Button title="Alugar" color={theme.colors.success} onPress={() => { }} />
+        <Button title="Alugar agora" color={theme.colors.success} onPress={handleConfirmRental} />
       </Footer>
     </Container>
   );

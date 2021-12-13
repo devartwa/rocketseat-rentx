@@ -1,6 +1,8 @@
 import React from 'react';
 import { StatusBar, useWindowDimensions } from 'react-native';
 import { TinyButton } from '../../components/TinyButton';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { MainParamList } from '../../@types';
 
 import LogoSvg from '../../assets/logo_background_gray.svg';
 import DoneSvg from '../../assets/done.svg';
@@ -13,13 +15,14 @@ import {
   Footer,
 } from './styles';
 
-export function SchedulingComplete() {
+type SchedulingCompleteNavigationProp = StackNavigationProp<MainParamList, 'SchedulingComplete'>;
+type SchedulingCompleteProps = { navigation: SchedulingCompleteNavigationProp };
+
+export function SchedulingComplete({ navigation }: SchedulingCompleteProps) {
   const { width } = useWindowDimensions();
 
-  let count = 0;
-
   const handleConfirm = () => {
-    alert(count++);
+    navigation.navigate('Home');
   }
 
   return (
