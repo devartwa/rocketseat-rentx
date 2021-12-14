@@ -11,3 +11,52 @@ export type MainParamList = {
   SchedulingDetails: undefined;
   SchedulingComplete: undefined;
 };
+
+export enum RequesterMethodEnum {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+  PATCH = 'PATCH',
+}
+
+export type RequesterServiceModel = {
+  method: RequesterMethodEnum;
+  endpoint: string;
+  timeout?: number;
+  attempt?: number;
+};
+
+export type RequesterOptionsModel = {
+  data?: any;
+  headers?: any;
+};
+
+export type RequesterResponseModel = {
+  success: boolean;
+  status?: number;
+  error: any;
+  data: any;
+};
+
+export type RentModel = {
+  period: string;
+  price: number;
+}
+
+export type AcessoriesModel = {
+  type: string;
+  name: string;
+}
+
+export type CarListModel = {
+  id: string;
+  brand: string;
+  name: string;
+  about: string;
+  rent: RentModel;
+  fuel_type: string;
+  thumbnail: string;
+  acessories: AcessoriesModel[];
+  photos: string[];
+}
