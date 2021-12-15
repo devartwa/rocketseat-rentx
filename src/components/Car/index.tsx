@@ -15,18 +15,9 @@ import {
 
 import Gasoline from '../../assets/gasoline.svg';
 import { RectButtonProps } from 'react-native-gesture-handler';
-
-interface CarData {
-  brand: string;
-  name: string;
-  rent: {
-    period: string;
-    price: number;
-  }
-  thumbnail: string;
-}
+import { CarListModel } from '../../@types';
 interface Props extends RectButtonProps {
-  data: CarData;
+  data: CarListModel;
 }
 
 export function Car({ data, ...rest }: Props) {

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import Logo from '../../assets/logo.svg';
-import { Car } from '../../components/Car';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MainParamList, CarListModel } from '../../@types';
+
+import { Car } from '../../components/Car';
+import { Load } from '../../components/Load';
+import Logo from '../../assets/logo.svg';
 
 import services from '../../services/services';
 import requester from '../../services/requester';
@@ -61,12 +63,14 @@ export function Home({ navigation }: HomeProps) {
           </TotalCars>
         </HeaderContent>
       </Header>
-      <CarList
-        data={cars}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
+      {loading ? <Load /> : (
+        <CarList
+          data={cars}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+        />
+      )}
 
-      />
     </Container>
   );
 };
