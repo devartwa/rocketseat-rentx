@@ -2,7 +2,7 @@ import React from 'react';
 
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
-import { Acessory } from '../../components/Acessory';
+import { Accessory } from '../../components/Accessory';
 import { Button } from '../../components/Button';
 import { useTheme } from 'styled-components';
 import { Feather } from '@expo/vector-icons';
@@ -30,7 +30,7 @@ import {
   Rent,
   Period,
   Price,
-  Acessories,
+  Accessories,
   Footer,
   RentalPeriod,
   CalendarIcon,
@@ -77,14 +77,14 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
           </Rent>
         </Details>
 
-        <Acessories>
-          <Acessory name="380Km/h" icon={speedSvg} />
-          <Acessory name="3.2s" icon={acceletarionSvg} />
-          <Acessory name="800 HP" icon={forceSvg} />
-          <Acessory name="Gasolina" icon={gasolineSvg} />
-          <Acessory name="Auto" icon={exchangeSvg} />
-          <Acessory name="5 pessoas" icon={peopleSvg} />
-        </Acessories>
+        <Accessories>
+          <Accessory name="380Km/h" icon={speedSvg} />
+          <Accessory name="3.2s" icon={acceletarionSvg} />
+          <Accessory name="800 HP" icon={forceSvg} />
+          <Accessory name="Gasolina" icon={gasolineSvg} />
+          <Accessory name="Auto" icon={exchangeSvg} />
+          <Accessory name="5 pessoas" icon={peopleSvg} />
+        </Accessories>
 
         <RentalPeriod>
           <CalendarIcon>

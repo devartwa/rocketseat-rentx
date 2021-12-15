@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useDispatch, useSelector } from 'react-redux';
+import { ApplicationState, saveCarList } from '../../redux';
 import { MainParamList, CarListModel } from '../../@types';
 
 import { Car } from '../../components/Car';
@@ -23,11 +25,14 @@ type HomeNavigationProp = StackNavigationProp<MainParamList, 'Home'>;
 type HomeProps = { navigation: HomeNavigationProp };
 
 export function Home({ navigation }: HomeProps) {
-  const [cars, setCars] = useState<CarListModel[]>([]);
+  const dispatch = useDispatch();
+  const { carList } = useSelector(
+    (state: ApplicationState) => state.carReducer
+  );
   const [loading, setLoading] = useState(true);
 
-  const handleCarDetails = () => {
-    navigation.navigate('CarDetails');
+  const handleCarDetails = (index: number) => {
+    navigation.navigate('CarDetails', { index });
   }
 
   const fetchCars = async () => {
@@ -39,7 +44,7 @@ export function Home({ navigation }: HomeProps) {
     const result = await requester(service);
 
     if (result.success) {
-      setCars(result.data);
+      dispatch(saveCarList(result.data));
     } else {
       console.log('Error', result.error);
     }
@@ -50,7 +55,7 @@ export function Home({ navigation }: HomeProps) {
     fetchCars();
   }, []);
 
-  const renderItem = ({ item }: { item: CarListModel }) => <Car onPress={handleCarDetails} data={item} />;
+  const renderItem = ({ item, index }) => <Car onPress={() => handleCarDetails(index)} data={item} />;
 
   return (
     <Container>
@@ -65,7 +70,7 @@ export function Home({ navigation }: HomeProps) {
       </Header>
       {loading ? <Load /> : (
         <CarList
-          data={cars}
+          data={carList}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
         />

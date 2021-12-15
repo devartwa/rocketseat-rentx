@@ -3,6 +3,9 @@ import React from 'react';
 import AppLoading from 'expo-app-loading';
 import { Routes } from './src/routes';
 import { ThemeProvider } from 'styled-components';
+import { Provider } from 'react-redux';
+import { persistor, store } from './src/redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import theme from './src/styles/theme';
 import {
   useFonts,
@@ -14,7 +17,6 @@ import {
   Archivo_500Medium,
   Archivo_600SemiBold,
 } from '@expo-google-fonts/archivo';
-
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -30,8 +32,12 @@ export default function App() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Routes />
-    </ThemeProvider>
+    <Provider store={store}>
+      {/* <PersistGate loading={null} persistor={persistor}> */}
+      <ThemeProvider theme={theme}>
+        <Routes />
+      </ThemeProvider>
+      {/* </PersistGate> */}
+    </Provider>
   );
 }

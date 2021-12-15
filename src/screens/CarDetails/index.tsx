@@ -2,18 +2,15 @@ import React from 'react';
 
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
-import { Acessory } from '../../components/Acessory';
+import { Accessory } from '../../components/Accessory';
 import { Button } from '../../components/Button';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MainParamList } from '../../@types';
-
-//Icons
-import speedSvg from '../../assets/speed.svg'
-import acceletarionSvg from '../../assets/acceleration.svg';
-import forceSvg from '../../assets/force.svg';
-import gasolineSvg from '../../assets/gasoline.svg';
-import exchangeSvg from '../../assets/exchange.svg';
-import peopleSvg from '../../assets/people.svg';
+import { useSelector } from 'react-redux';
+import { ApplicationState } from '../../redux';
+import { StatusBar } from 'react-native';
+import { useRoute } from '@react-navigation/native';
+import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 
 import {
   Container,
@@ -28,15 +25,19 @@ import {
   Period,
   Price,
   About,
-  Acessories,
+  Accessories,
   Footer,
 } from './styles';
-import { StatusBar } from 'react-native';
 
 type CarDetailsNavigationProp = StackNavigationProp<MainParamList, 'CarDetails'>;
 type CarDetailsProps = { navigation: CarDetailsNavigationProp };
 
 export function CarDetails({ navigation }: CarDetailsProps) {
+  const route = useRoute();
+  const { index }: any = route.params;
+  const { carList } = useSelector(
+    (state: ApplicationState) => state.carReducer
+  );
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -54,33 +55,30 @@ export function CarDetails({ navigation }: CarDetailsProps) {
       </Header>
 
       <ImageSliderWrapper>
-        <ImageSlider imagesUrl={['https://lh3.googleusercontent.com/proxy/fDKLY20Z0ZLQry7cA5fgx6-RgeS0Rw98ID1vP76JCi924487T8SuhKwsP_Zco7AN0VZnsZW4I_IS-XZUzuepGexDRhx7lJPeMNTxKBnQor_N731xitqmWE7I4RYEmhU']} />
+        <ImageSlider imagesUrl={carList[index].photos} />
       </ImageSliderWrapper>
 
       <Content>
         <Details>
           <Description>
-            <Brand>FIAT</Brand>
-            <Name>Uno</Name>
+            <Brand>{carList[index].brand}</Brand>
+            <Name>{carList[index].name}</Name>
           </Description>
 
           <Rent>
-            <Period>AO DIA</Period>
-            <Price>R$ 120</Price>
+            <Period>{carList[index].rent.period}</Period>
+            <Price>R$ {carList[index].rent.price}</Price>
           </Rent>
         </Details>
 
-        <Acessories>
-          <Acessory name="380Km/h" icon={speedSvg} />
-          <Acessory name="3.2s" icon={acceletarionSvg} />
-          <Acessory name="800 HP" icon={forceSvg} />
-          <Acessory name="Gasolina" icon={gasolineSvg} />
-          <Acessory name="Auto" icon={exchangeSvg} />
-          <Acessory name="5 pessoas" icon={peopleSvg} />
-        </Acessories>
+        <Accessories>
+          {carList[index].accessories.map((accessory, index) => (
+            <Accessory key={index} name={accessory.name} icon={getAccessoryIcon(accessory.type)} />
+          ))}
+        </Accessories>
 
         <About>
-          The Uno is a compact car that is available in a variety of colors.
+          {carList[index].about}
         </About>
       </Content>
 

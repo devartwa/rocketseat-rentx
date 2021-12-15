@@ -6,7 +6,7 @@ export type RootStackParamList = {
 
 export type MainParamList = {
   Home: undefined;
-  CarDetails: undefined;
+  CarDetails: { index: number };
   Scheduling: undefined;
   SchedulingDetails: undefined;
   SchedulingComplete: undefined;
@@ -44,7 +44,7 @@ export type RentModel = {
   price: number;
 }
 
-export type AcessoriesModel = {
+export type AccessoriesModel = {
   type: string;
   name: string;
 }
@@ -57,6 +57,6 @@ export type CarListModel = {
   rent: RentModel;
   fuel_type: string;
   thumbnail: string;
-  acessories: AcessoriesModel[];
+  accessories: AccessoriesModel[];
   photos: string[];
 }
