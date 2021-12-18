@@ -6,7 +6,7 @@ export type RootStackParamList = {
 
 export type MainParamList = {
   Home: undefined;
-  CarDetails: { index: number };
+  CarDetails: undefined;
   Scheduling: undefined;
   SchedulingDetails: {
     dates: string[];

@@ -3,11 +3,13 @@ import { CarListModel } from "../../@types";
 
 type CarState = {
   carList: Array<CarListModel>;
+  carSelected: CarListModel;
   carError: string | undefined;
 };
 
 const initialState: CarState = {
   carList: [],
+  carSelected: {} as CarListModel,
   carError: undefined,
 };
 
@@ -20,6 +22,11 @@ const CarReducer = (
       return {
         ...state,
         carList: action.payload,
+      };
+    case 'ON_SAVE_SELECTED_CAR':
+      return {
+        ...state,
+        carSelected: action.payload,
       };
     case 'ON_CAR_ERROR':
       return {

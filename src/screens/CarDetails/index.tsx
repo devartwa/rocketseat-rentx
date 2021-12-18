@@ -9,7 +9,6 @@ import { MainParamList } from '../../@types';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '../../redux';
 import { StatusBar } from 'react-native';
-import { useRoute } from '@react-navigation/native';
 import { getAccessoryIcon } from '../../utils/accessoryIcon';
 
 import {
@@ -33,9 +32,7 @@ type CarDetailsNavigationProp = StackNavigationProp<MainParamList, 'CarDetails'>
 type CarDetailsProps = { navigation: CarDetailsNavigationProp };
 
 export function CarDetails({ navigation }: CarDetailsProps) {
-  const route = useRoute();
-  const { index }: any = route.params;
-  const { carList } = useSelector(
+  const { carSelected } = useSelector(
     (state: ApplicationState) => state.carReducer
   );
 
@@ -55,30 +52,30 @@ export function CarDetails({ navigation }: CarDetailsProps) {
       </Header>
 
       <ImageSliderWrapper>
-        <ImageSlider imagesUrl={carList[index].photos} />
+        <ImageSlider imagesUrl={carSelected.photos} />
       </ImageSliderWrapper>
 
       <Content>
         <Details>
           <Description>
-            <Brand>{carList[index].brand}</Brand>
-            <Name>{carList[index].name}</Name>
+            <Brand>{carSelected.brand}</Brand>
+            <Name>{carSelected.name}</Name>
           </Description>
 
           <Rent>
-            <Period>{carList[index].rent.period}</Period>
-            <Price>R$ {carList[index].rent.price}</Price>
+            <Period>{carSelected.rent.period}</Period>
+            <Price>R$ {carSelected.rent.price}</Price>
           </Rent>
         </Details>
 
         <Accessories>
-          {carList[index].accessories.map((accessory, index) => (
+          {carSelected.accessories.map((accessory, index) => (
             <Accessory key={index} name={accessory.name} icon={getAccessoryIcon(accessory.type)} />
           ))}
         </Accessories>
 
         <About>
-          {carList[index].about}
+          {carSelected.about}
         </About>
       </Content>
 

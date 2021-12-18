@@ -3,7 +3,7 @@ import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
-import { ApplicationState, saveCarList } from '../../redux';
+import { ApplicationState, saveCarList, saveSelectedCar } from '../../redux';
 import { MainParamList, CarListModel } from '../../@types';
 
 import { Car } from '../../components/Car';
@@ -26,13 +26,16 @@ type HomeProps = { navigation: HomeNavigationProp };
 
 export function Home({ navigation }: HomeProps) {
   const dispatch = useDispatch();
-  const { carList } = useSelector(
+  const { carList, carSelected } = useSelector(
     (state: ApplicationState) => state.carReducer
   );
   const [loading, setLoading] = useState(true);
 
   const handleCarDetails = (index: number) => {
-    navigation.navigate('CarDetails', { index });
+    dispatch(saveSelectedCar(carList[index]));
+    if (carSelected) {
+      navigation.navigate('CarDetails');
+    }
   }
 
   const fetchCars = async () => {
