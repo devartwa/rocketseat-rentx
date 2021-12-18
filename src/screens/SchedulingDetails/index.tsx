@@ -41,6 +41,8 @@ import {
   RentalPriceQuota,
   RentalPriceTotal
 } from './styles';
+import services from '../../services/services';
+import requester from '../../services/requester';
 
 type SchedulingDetailsNavigationProp = StackNavigationProp<MainParamList, 'SchedulingDetails'>;
 type SchedulingDetailsProps = { navigation: SchedulingDetailsNavigationProp };
@@ -63,8 +65,23 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
 
   const rentalTotal = Number(dates.length) * carSelected.rent.price;
 
-  const handleConfirmRental = () => {
-    navigation.navigate('SchedulingComplete');
+  const handleConfirmRental = async () => {
+    const service = {
+      ...services.getSchedulesByCar,
+      endpoint: services.getSchedulesByCar.endpoint.replace('{{carId}}', carSelected.id),
+    };
+
+    const result = await requester(service);
+
+    const unvailable_dates = [
+      ...result,
+      ...dates,
+    ]
+
+    const response = await requester()
+
+
+    // navigation.navigate('SchedulingComplete');
   }
 
   const handleGoBack = () => {
@@ -75,7 +92,7 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
     setRentalPeriod({
       start: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
       end: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy'),
-    })
+    });
   }, []);
 
   return (

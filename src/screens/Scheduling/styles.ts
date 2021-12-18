@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
+import theme from '../../styles/theme';
 
 interface DateValueContainerProps {
   selected?: boolean;
@@ -71,3 +72,8 @@ export const Footer = styled.View`
   background-color: ${({ theme }) => theme.colors.background_secondary};
   padding: 24px 24px ${getBottomSpace() + 24}px;
 `;
+
+export const Loading = styled.ActivityIndicator.attrs({
+  size: 'small',
+  color: theme.colors.shape,
+})``;

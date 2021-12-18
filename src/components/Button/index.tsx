@@ -7,7 +7,7 @@ import {
 } from './styles';
 
 interface Props extends RectButtonProps {
-  title: string;
+  title: string | JSX.Element;
   color?: string;
 }
 
