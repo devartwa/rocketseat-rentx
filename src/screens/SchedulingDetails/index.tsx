@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
@@ -9,14 +9,12 @@ import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MainParamList } from '../../@types';
-
-//Icons
-import speedSvg from '../../assets/speed.svg'
-import acceletarionSvg from '../../assets/acceleration.svg';
-import forceSvg from '../../assets/force.svg';
-import gasolineSvg from '../../assets/gasoline.svg';
-import exchangeSvg from '../../assets/exchange.svg';
-import peopleSvg from '../../assets/people.svg';
+import { useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { ApplicationState } from '../../redux';
+import { getAccessoryIcon } from '../../utils/accessoryIcon';
+import { format } from 'date-fns';
+import { getPlatformDate } from '../../utils/platformDate';
 
 import {
   Container,
@@ -47,8 +45,23 @@ import {
 type SchedulingDetailsNavigationProp = StackNavigationProp<MainParamList, 'SchedulingDetails'>;
 type SchedulingDetailsProps = { navigation: SchedulingDetailsNavigationProp };
 
+interface RentalPeriodProps {
+  start: string;
+  end: string;
+}
+
 export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
+  const [rentalPeriod, setRentalPeriod] = useState<RentalPeriodProps>({} as RentalPeriodProps);
+
   const theme = useTheme();
+  const route = useRoute();
+
+  const { dates }: any = route.params;
+  const { carSelected } = useSelector(
+    (state: ApplicationState) => state.carReducer
+  );
+
+  const rentalTotal = Number(dates.length) * carSelected.rent.price;
 
   const handleConfirmRental = () => {
     navigation.navigate('SchedulingComplete');
@@ -58,6 +71,13 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
     navigation.goBack();
   }
 
+  useEffect(() => {
+    setRentalPeriod({
+      start: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
+      end: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy'),
+    })
+  }, []);
+
   return (
     <Container>
       <Header>
@@ -65,29 +85,26 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
       </Header>
 
       <ImageSliderWrapper>
-        <ImageSlider imagesUrl={['https://lh3.googleusercontent.com/proxy/fDKLY20Z0ZLQry7cA5fgx6-RgeS0Rw98ID1vP76JCi924487T8SuhKwsP_Zco7AN0VZnsZW4I_IS-XZUzuepGexDRhx7lJPeMNTxKBnQor_N731xitqmWE7I4RYEmhU']} />
+        <ImageSlider imagesUrl={carSelected.photos} />
       </ImageSliderWrapper>
 
       <Content>
         <Details>
           <Description>
-            <Brand>FIAT</Brand>
-            <Name>Uno</Name>
+            <Brand>{carSelected.brand}</Brand>
+            <Name>{carSelected.name}</Name>
           </Description>
 
           <Rent>
-            <Period>AO DIA</Period>
-            <Price>R$ 120</Price>
+            <Period>{carSelected.rent.period}</Period>
+            <Price>R$ {carSelected.rent.price}</Price>
           </Rent>
         </Details>
 
         <Accessories>
-          <Accessory name="380Km/h" icon={speedSvg} />
-          <Accessory name="3.2s" icon={acceletarionSvg} />
-          <Accessory name="800 HP" icon={forceSvg} />
-          <Accessory name="Gasolina" icon={gasolineSvg} />
-          <Accessory name="Auto" icon={exchangeSvg} />
-          <Accessory name="5 pessoas" icon={peopleSvg} />
+          {carSelected.accessories.map((accessory, index) => (
+            <Accessory key={index} name={accessory.name} icon={getAccessoryIcon(accessory.type)} />
+          ))}
         </Accessories>
 
         <RentalPeriod>
@@ -97,22 +114,24 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
 
           <DateInfo>
             <DateTitle>DE</DateTitle>
-            <DateValue>10/10/2000</DateValue>
+            <DateValue>{rentalPeriod.start}</DateValue>
           </DateInfo>
 
           <Feather name="chevron-right" size={RFValue(24)} color={theme.colors.shape} />
 
           <DateInfo>
             <DateTitle>ATÉ</DateTitle>
-            <DateValue>10/10/2000</DateValue>
+            <DateValue>{rentalPeriod.end}</DateValue>
           </DateInfo>
         </RentalPeriod>
 
         <RentalPrice>
           <RentalPriceLabel>TOTAL</RentalPriceLabel>
           <RentalPriceDetails>
-            <RentalPriceQuota>R$ 120 x 3 diárias</RentalPriceQuota>
-            <RentalPriceTotal>R$ 360</RentalPriceTotal>
+            <RentalPriceQuota>R$ {carSelected.rent.price} x {Number(dates.length)}{' '}
+              {dates.length > 1 ? 'diárias' : ' diária'}
+            </RentalPriceQuota>
+            <RentalPriceTotal>R$ {rentalTotal}</RentalPriceTotal>
           </RentalPriceDetails>
         </RentalPrice>
       </Content>
