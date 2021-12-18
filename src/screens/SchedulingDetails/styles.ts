@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { RFValue } from 'react-native-responsive-fontsize';
+import theme from '../../styles/theme';
 
 export const Container = styled.View`
   flex: 1;
@@ -141,3 +142,8 @@ export const RentalPriceTotal = styled.Text`
   color: ${({ theme }) => theme.colors.success};
   font-size: ${RFValue(24)}px;
 `;
+
+export const Loading = styled.ActivityIndicator.attrs({
+  size: 'small',
+  color: theme.colors.shape,
+})``;

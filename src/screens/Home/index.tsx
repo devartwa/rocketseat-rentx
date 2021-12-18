@@ -49,7 +49,7 @@ export function Home({ navigation }: HomeProps) {
     if (result.success) {
       dispatch(saveCarList(result.data));
     } else {
-      console.log('Error', result.error);
+      console.log("Error: ", result.error);
     }
     setLoading(false);
   }
@@ -67,7 +67,8 @@ export function Home({ navigation }: HomeProps) {
         <HeaderContent>
           <Logo width={RFValue(108)} height={RFValue(12)} />
           <TotalCars>
-            Total de 12 carros
+            Total de {carList.length}{' '}
+            {carList.length > 1 ? 'carros' : 'carro'}
           </TotalCars>
         </HeaderContent>
       </Header>

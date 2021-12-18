@@ -51,8 +51,8 @@ export function Scheduling({ navigation }: SchedulingProps) {
   const [selectedDates, setSelectedDates] = useState<SelectedDatesProps>({} as SelectedDatesProps);
   const [rentalPeriod, setRentalPeriod] = useState<RentalPeriodProps>({} as RentalPeriodProps);
   const [loading, setLoading] = useState(false);
+  const [messageModal, setMessageModal] = useState("Por favor, selecione uma data de início e fim do aluguel.");
   const [modal, setModal] = useState(false);
-  const [modalUnavailable, setModalUnavailable] = useState(false);
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -94,14 +94,20 @@ export function Scheduling({ navigation }: SchedulingProps) {
 
     const result = await requester(service);
 
-    const unavailableDate = result.data.unavailable_dates.includes(rentalPeriod.start) && result.data.unavailable_dates.includes(rentalPeriod.end);
+    if (result.success) {
+      const unavailableStartDate = result.data.unavailable_dates.includes(rentalPeriod.start);
+      const unavailableEndDate = result.data.unavailable_dates.includes(rentalPeriod.end);
 
-    if (!unavailableDate) {
-      navigation.navigate('SchedulingDetails', {
-        dates: Object.keys(selectedDates)
-      });
+      if (!unavailableStartDate && !unavailableEndDate) {
+        navigation.navigate('SchedulingDetails', {
+          dates: Object.keys(selectedDates)
+        });
+      } else {
+        setModal(true);
+        setMessageModal("Não há disponibilidade para o período selecionado. Por favor, selecione outro período.");
+      }
     } else {
-      setModalUnavailable(true);
+      console.log("Error: ", result.error);
     }
     setLoading(false);
   }
@@ -161,13 +167,7 @@ export function Scheduling({ navigation }: SchedulingProps) {
       <AlertModal
         visible={modal}
         dismissModal={() => setModal(false)}
-        message="Por favor, selecione uma data de início e fim do aluguel."
-      />
-
-      <AlertModal
-        visible={modalUnavailable}
-        dismissModal={() => setModalUnavailable(false)}
-        message="Pedimos desculpas, porém as datas selecionadas estão indisponíveis. Por favor, selecione outras datas."
+        message={messageModal}
       />
     </Container>
   );

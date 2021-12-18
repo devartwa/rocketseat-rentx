@@ -8,13 +8,16 @@ import { useTheme } from 'styled-components';
 import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { MainParamList } from '../../@types';
+import { MainParamList, RequesterOptionsModel } from '../../@types';
 import { useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '../../redux';
 import { getAccessoryIcon } from '../../utils/accessoryIcon';
 import { format } from 'date-fns';
 import { getPlatformDate } from '../../utils/platformDate';
+import services from '../../services/services';
+import requester from '../../services/requester';
+import { AlertModal } from '../../components/AlertModal';
 
 import {
   Container,
@@ -39,10 +42,9 @@ import {
   RentalPriceLabel,
   RentalPriceDetails,
   RentalPriceQuota,
-  RentalPriceTotal
+  RentalPriceTotal,
+  Loading,
 } from './styles';
-import services from '../../services/services';
-import requester from '../../services/requester';
 
 type SchedulingDetailsNavigationProp = StackNavigationProp<MainParamList, 'SchedulingDetails'>;
 type SchedulingDetailsProps = { navigation: SchedulingDetailsNavigationProp };
@@ -54,6 +56,8 @@ interface RentalPeriodProps {
 
 export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
   const [rentalPeriod, setRentalPeriod] = useState<RentalPeriodProps>({} as RentalPeriodProps);
+  const [modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const theme = useTheme();
   const route = useRoute();
@@ -66,22 +70,27 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
   const rentalTotal = Number(dates.length) * carSelected.rent.price;
 
   const handleConfirmRental = async () => {
+    setLoading(true);
     const service = {
-      ...services.getSchedulesByCar,
-      endpoint: services.getSchedulesByCar.endpoint.replace('{{carId}}', carSelected.id),
+      ...services.putSchedulesByCar,
+      endpoint: services.putSchedulesByCar.endpoint.replace('{{carId}}', carSelected.id),
     };
 
-    const result = await requester(service);
+    const options: RequesterOptionsModel = {
+      data: {
+        id: carSelected.id,
+        unvailable_dates: dates,
+      }
+    }
 
-    const unvailable_dates = [
-      ...result,
-      ...dates,
-    ]
+    const result = await requester(service, options);
 
-    const response = await requester()
-
-
-    // navigation.navigate('SchedulingComplete');
+    if (result.success) {
+      navigation.navigate('SchedulingComplete');
+    } else {
+      setModal(true);
+    }
+    setLoading(false);
   }
 
   const handleGoBack = () => {
@@ -154,8 +163,17 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
       </Content>
 
       <Footer>
-        <Button title="Alugar agora" color={theme.colors.success} onPress={handleConfirmRental} />
+        <Button
+          title={loading ? <Loading /> : "Alugar agora"}
+          color={theme.colors.success}
+          onPress={handleConfirmRental} />
       </Footer>
+
+      <AlertModal
+        visible={modal}
+        dismissModal={() => setModal(false)}
+        message='Não há disponibilidade para o período selecionado. Por favor, selecione novamente.'
+      />
     </Container>
   );
 };
