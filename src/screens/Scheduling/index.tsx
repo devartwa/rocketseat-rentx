@@ -24,6 +24,7 @@ import {
   Content,
   Footer
 } from './styles';
+import { AlertModal } from '../../components/AlertModal';
 
 type SchedulingNavigationProp = StackNavigationProp<MainParamList, 'Scheduling'>;
 type SchedulingProps = { navigation: SchedulingNavigationProp };
@@ -41,12 +42,16 @@ export function Scheduling({ navigation }: SchedulingProps) {
   const [lastSelectedDate, setLastSelectedData] = useState<DayProps>({} as DayProps);
   const [selectedDates, setSelectedDates] = useState<SelectedDatesProps>({} as SelectedDatesProps);
   const [rentalPeriod, setRentalPeriod] = useState<RentalPeriodProps>({} as RentalPeriodProps);
+  const [modal, setModal] = useState(false);
 
   const handleGoBack = () => {
     navigation.goBack();
   }
 
   const handleConfirmRental = () => {
+    if (!rentalPeriod.start || !rentalPeriod.end) {
+      return setModal(true);
+    }
     navigation.navigate('SchedulingDetails');
   }
 
@@ -124,6 +129,12 @@ export function Scheduling({ navigation }: SchedulingProps) {
           onPress={handleConfirmRental}
         />
       </Footer>
+
+      <AlertModal
+        visible={modal}
+        dismissModal={() => setModal(false)}
+        message="Por favor, selecione uma data de início e fim do aluguel."
+      />
     </Container>
   );
 }
