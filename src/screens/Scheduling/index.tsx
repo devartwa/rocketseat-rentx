@@ -7,6 +7,8 @@ import { Calendar, SelectedDatesProps, DayProps } from '../../components/Calenda
 import { generateInterval } from '../../utils/generateInterval';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MainParamList } from '../../@types';
+import { getPlatformDate } from '../../utils/platformDate';
+import { format } from 'date-fns';
 
 import ArrowSvg from '../../assets/arrow.svg';
 
@@ -26,11 +28,19 @@ import {
 type SchedulingNavigationProp = StackNavigationProp<MainParamList, 'Scheduling'>;
 type SchedulingProps = { navigation: SchedulingNavigationProp };
 
+interface RentalPeriodProps {
+  start: number;
+  startFormatted: string;
+  end: number;
+  endFormatted: string;
+}
+
 export function Scheduling({ navigation }: SchedulingProps) {
 
   const theme = useTheme();
   const [lastSelectedDate, setLastSelectedData] = useState<DayProps>({} as DayProps);
   const [selectedDates, setSelectedDates] = useState<SelectedDatesProps>({} as SelectedDatesProps);
+  const [rentalPeriod, setRentalPeriod] = useState<RentalPeriodProps>({} as RentalPeriodProps);
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -52,6 +62,15 @@ export function Scheduling({ navigation }: SchedulingProps) {
     setLastSelectedData(end);
     const interval = generateInterval(start, end);
     setSelectedDates(interval);
+
+    const startDate = Object.keys(interval)[0];
+    const endDate = Object.keys(interval)[Object.keys(interval).length - 1];
+    setRentalPeriod({
+      start: start.timestamp,
+      end: end.timestamp,
+      startFormatted: format(getPlatformDate(new Date(startDate)), 'dd/MM/yyyy'),
+      endFormatted: format(getPlatformDate(new Date(endDate)), 'dd/MM/yyyy')
+    })
   }
 
   return (
@@ -76,8 +95,8 @@ export function Scheduling({ navigation }: SchedulingProps) {
         <RentalPeriod>
           <DateInfo>
             <DateTitle>DE</DateTitle>
-            <DateValueContainer selected={false}>
-              <DateValue></DateValue>
+            <DateValueContainer selected={!!rentalPeriod.startFormatted}>
+              <DateValue>{rentalPeriod.startFormatted}</DateValue>
             </DateValueContainer>
           </DateInfo>
 
@@ -85,8 +104,8 @@ export function Scheduling({ navigation }: SchedulingProps) {
 
           <DateInfo>
             <DateTitle>ATÉ</DateTitle>
-            <DateValueContainer selected={false}>
-              <DateValue></DateValue>
+            <DateValueContainer selected={!!rentalPeriod.endFormatted}>
+              <DateValue>{rentalPeriod.endFormatted}</DateValue>
             </DateValueContainer>
           </DateInfo>
         </RentalPeriod>
