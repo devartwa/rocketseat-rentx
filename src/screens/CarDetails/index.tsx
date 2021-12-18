@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { ApplicationState } from '../../redux';
 import { StatusBar } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
+import { getAccessoryIcon } from '../../utils/accessoryIcon';
 
 import {
   Container,
