@@ -30,9 +30,7 @@ type SchedulingNavigationProp = StackNavigationProp<MainParamList, 'Scheduling'>
 type SchedulingProps = { navigation: SchedulingNavigationProp };
 
 interface RentalPeriodProps {
-  start: number;
   startFormatted: string;
-  end: number;
   endFormatted: string;
 }
 
@@ -46,13 +44,6 @@ export function Scheduling({ navigation }: SchedulingProps) {
 
   const handleGoBack = () => {
     navigation.goBack();
-  }
-
-  const handleConfirmRental = () => {
-    if (!rentalPeriod.start || !rentalPeriod.end) {
-      return setModal(true);
-    }
-    navigation.navigate('SchedulingDetails');
   }
 
   const handleSelectedDates = (date: DayProps) => {
@@ -71,11 +62,18 @@ export function Scheduling({ navigation }: SchedulingProps) {
     const startDate = Object.keys(interval)[0];
     const endDate = Object.keys(interval)[Object.keys(interval).length - 1];
     setRentalPeriod({
-      start: start.timestamp,
-      end: end.timestamp,
       startFormatted: format(getPlatformDate(new Date(startDate)), 'dd/MM/yyyy'),
       endFormatted: format(getPlatformDate(new Date(endDate)), 'dd/MM/yyyy')
     })
+  }
+
+  const handleConfirmRental = () => {
+    if (!rentalPeriod.startFormatted || !rentalPeriod.endFormatted) {
+      return setModal(true);
+    }
+    navigation.navigate('SchedulingDetails', {
+      dates: Object.keys(selectedDates)
+    });
   }
 
   return (

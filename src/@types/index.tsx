@@ -8,7 +8,9 @@ export type MainParamList = {
   Home: undefined;
   CarDetails: { index: number };
   Scheduling: undefined;
-  SchedulingDetails: undefined;
+  SchedulingDetails: {
+    dates: string[];
+  };
   SchedulingComplete: undefined;
 };
 
