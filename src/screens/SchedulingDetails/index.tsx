@@ -58,6 +58,8 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
   const [rentalPeriod, setRentalPeriod] = useState<RentalPeriodProps>({} as RentalPeriodProps);
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [secondLoading, setSecondLoading] = useState(false);
+  const [enabled, setEnabled] = useState(true);
 
   const theme = useTheme();
   const route = useRoute();
@@ -71,8 +73,38 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
 
   const rentalTotal = Number(dates.length) * carSelected.rent.price;
 
-  const handleConfirmRental = async () => {
+  const handlePostRental = async () => {
     setLoading(true);
+    setEnabled(false);
+    const service = {
+      ...services.postSchedulesByUser,
+      endpoint: services.postSchedulesByUser.endpoint,
+    };
+
+    const options: RequesterOptionsModel = {
+      data: {
+        user_id: 1,
+        car: carSelected,
+        startDate: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
+        endDate: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy'),
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }
+
+    const result = await requester(service, options);
+
+    if (result.success) {
+      handleConfirmRental();
+    } else {
+      console.log("Error: ", result.error);
+    }
+    setLoading(false);
+  }
+
+  const handleConfirmRental = async () => {
+    setSecondLoading(true);
     const service = {
       ...services.putSchedulesByCar,
       endpoint: services.putSchedulesByCar.endpoint.replace('{{carId}}', carSelected.id),
@@ -81,7 +113,7 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
     const options: RequesterOptionsModel = {
       data: {
         id: carSelected.id,
-        unvailable_dates: dates,
+        unavailable_dates: dates,
       }
     }
 
@@ -92,7 +124,8 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
     } else {
       setModal(true);
     }
-    setLoading(false);
+    setSecondLoading(false);
+    setEnabled(true);
   }
 
   const handleGoBack = () => {
@@ -170,9 +203,11 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
 
       <Footer>
         <Button
-          title={loading ? <Loading /> : "Alugar agora"}
+          title={loading || secondLoading ? <Loading /> : "Alugar agora"}
           color={theme.colors.success}
-          onPress={handleConfirmRental} />
+          onPress={handlePostRental}
+          enabled={enabled}
+        />
       </Footer>
 
       <AlertModal

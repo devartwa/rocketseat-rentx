@@ -89,7 +89,7 @@ export function Scheduling({ navigation }: SchedulingProps) {
 
     const service = {
       ...services.getSchedulesByCar,
-      endpoint: services.getSchedulesByCar.endpoint.replace('{{carId}}', carSelected.id),
+      endpoint: services.getSchedulesByCar.endpoint.replace('{{carId}}', '49983f6c-a46a-4dfd-a86e-425b8c72e086'),
     };
 
     const result = await requester(service);
@@ -161,6 +161,7 @@ export function Scheduling({ navigation }: SchedulingProps) {
         <Button
           title={loading ? <Loading /> : 'Confirmar'}
           onPress={handleConfirmRental}
+          enabled={!!rentalPeriod.startFormatted}
         />
       </Footer>
 

@@ -8,6 +8,7 @@ interface Services {
   getSchedulesByUser: RequesterServiceModel;
   getSchedulesByCar: RequesterServiceModel;
   putSchedulesByCar: RequesterServiceModel;
+  postSchedulesByUser: RequesterServiceModel;
 }
 
 const services: Services = {
@@ -26,6 +27,10 @@ const services: Services = {
   putSchedulesByCar: {
     method: RequesterMethodEnum.PUT,
     endpoint: 'schedules_bycars/{{carId}}',
+  },
+  postSchedulesByUser: {
+    method: RequesterMethodEnum.POST,
+    endpoint: 'schedules_byuser',
   }
 };
 
