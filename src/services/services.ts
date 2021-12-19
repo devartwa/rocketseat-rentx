@@ -5,6 +5,7 @@ import {
 
 interface Services {
   getCars: RequesterServiceModel;
+  getSchedulesByUser: RequesterServiceModel;
   getSchedulesByCar: RequesterServiceModel;
   putSchedulesByCar: RequesterServiceModel;
 }
@@ -13,6 +14,10 @@ const services: Services = {
   getCars: {
     method: RequesterMethodEnum.GET,
     endpoint: 'cars',
+  },
+  getSchedulesByUser: {
+    method: RequesterMethodEnum.GET,
+    endpoint: 'schedules_byuser?',
   },
   getSchedulesByCar: {
     method: RequesterMethodEnum.GET,

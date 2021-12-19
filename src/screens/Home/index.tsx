@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -35,6 +35,7 @@ export function Home({ navigation }: HomeProps) {
     (state: ApplicationState) => state.carReducer
   );
   const [loading, setLoading] = useState(true);
+  const isMounted = useRef(true);
 
   const handleCarDetails = (index: number) => {
     dispatch(saveSelectedCar(carList[index]));
@@ -59,8 +60,15 @@ export function Home({ navigation }: HomeProps) {
     setLoading(false);
   }
 
+  const handleMyCars = () => {
+    navigation.navigate('MyCars');
+  }
+
   useEffect(() => {
     fetchCars();
+    return () => {
+      isMounted.current = false;
+    };
   }, []);
 
   const renderItem = ({ item, index }) => <Car onPress={() => handleCarDetails(index)} data={item} />;
@@ -88,7 +96,7 @@ export function Home({ navigation }: HomeProps) {
         iconName="ios-car-sport"
         size={RFValue(32)}
         color={theme.colors.background_secondary}
-        onPress={() => { }}
+        onPress={handleMyCars}
       />
     </Container>
   );

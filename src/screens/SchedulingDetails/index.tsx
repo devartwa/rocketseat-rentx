@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
@@ -67,6 +67,8 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
     (state: ApplicationState) => state.carReducer
   );
 
+  const isMounted = useRef(true);
+
   const rentalTotal = Number(dates.length) * carSelected.rent.price;
 
   const handleConfirmRental = async () => {
@@ -102,6 +104,10 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
       start: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
       end: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy'),
     });
+
+    return () => {
+      isMounted.current = false;
+    };
   }, []);
 
   return (
