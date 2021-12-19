@@ -12,6 +12,7 @@ export type MainParamList = {
     dates: string[];
   };
   SchedulingComplete: undefined;
+  MyCars: undefined;
 };
 
 export enum RequesterMethodEnum {

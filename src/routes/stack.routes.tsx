@@ -2,13 +2,14 @@ import React from "react";
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { BackHandler } from "react-native";
+import { MainParamList } from "../@types";
 
 import { Home } from '../screens/Home';
 import { CarDetails } from '../screens/CarDetails';
 import { Scheduling } from '../screens/Scheduling';
 import { SchedulingDetails } from '../screens/SchedulingDetails';
 import { SchedulingComplete } from '../screens/SchedulingComplete';
-import { MainParamList } from "../@types";
+import { MyCars } from '../screens/MyCars';
 
 const { Navigator, Screen } = createStackNavigator<MainParamList>();
 
@@ -78,6 +79,16 @@ export function StackRoutes() {
       <Screen
         name="SchedulingComplete"
         component={SchedulingComplete}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.SlideFromRightIOS,
+          gestureDirection: 'horizontal',
+        }}
+      />
+
+      <Screen
+        name="MyCars"
+        component={MyCars}
         options={{
           headerShown: false,
           ...TransitionPresets.SlideFromRightIOS,
