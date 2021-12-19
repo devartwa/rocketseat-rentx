@@ -11,7 +11,7 @@ export const Container = styled.View`
   min-height: 180px;
   align-items: center;
   justify-content: flex-start;
-  background-color: ${({ theme }) => theme.colors.shape};
+  background-color: ${({ theme }) => theme.colors.background_secondary};
   padding: 10px;
   border-radius: 5px;
 `;

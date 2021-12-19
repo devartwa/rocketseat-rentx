@@ -6,9 +6,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ApplicationState, saveCarList, saveSelectedCar } from '../../redux';
 import { MainParamList, CarListModel } from '../../@types';
 
+import { FloatingButton } from '../../components/FloatingButton';
+import { useTheme } from 'styled-components';
+
 import { Car } from '../../components/Car';
 import { Load } from '../../components/Load';
 import Logo from '../../assets/logo.svg';
+import CarSvg from '../../assets/car.svg';
 
 import services from '../../services/services';
 import requester from '../../services/requester';
@@ -26,6 +30,7 @@ type HomeProps = { navigation: HomeNavigationProp };
 
 export function Home({ navigation }: HomeProps) {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const { carList, carSelected } = useSelector(
     (state: ApplicationState) => state.carReducer
   );
@@ -79,7 +84,12 @@ export function Home({ navigation }: HomeProps) {
           renderItem={renderItem}
         />
       )}
-
+      <FloatingButton
+        iconName="ios-car-sport"
+        size={RFValue(32)}
+        color={theme.colors.background_secondary}
+        onPress={() => { }}
+      />
     </Container>
   );
 };
