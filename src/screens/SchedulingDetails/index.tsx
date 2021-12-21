@@ -114,6 +114,9 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
       data: {
         id: carSelected.id,
         unavailable_dates: dates,
+      },
+      headers: {
+        'Content-Type': 'application/json',
       }
     }
 

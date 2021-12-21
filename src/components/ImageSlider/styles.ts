@@ -1,5 +1,10 @@
-import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
+import { Dimensions } from 'react-native';
+import { FlatList, FlatListProps } from 'react-native';
+
+interface Props {
+  imagesUrl: string[];
+}
 
 interface ImageIndexProps {
   active: boolean;
@@ -31,3 +36,10 @@ export const CarImage = styled.Image`
   width: 280px;
   height: 132px;
 `;
+
+export const CarList = styled(
+  FlatList as new (props: FlatListProps<Props>) => FlatList<Props>
+).attrs({
+  showsHorizontalScrollIndicator: false,
+  horizontal: true,
+})``;
