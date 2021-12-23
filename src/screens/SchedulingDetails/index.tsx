@@ -48,7 +48,6 @@ import {
 
 type SchedulingDetailsNavigationProp = StackNavigationProp<MainParamList, 'SchedulingDetails'>;
 type SchedulingDetailsProps = { navigation: SchedulingDetailsNavigationProp };
-
 interface RentalPeriodProps {
   start: string;
   end: string;
