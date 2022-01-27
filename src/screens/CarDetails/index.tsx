@@ -102,10 +102,6 @@ export function CarDetails({ navigation }: CarDetailsProps) {
 
         <About>
           {carSelected.about}
-          {carSelected.about}
-          {carSelected.about}
-          {carSelected.about}
-          {carSelected.about}
         </About>
       </Content>
 
