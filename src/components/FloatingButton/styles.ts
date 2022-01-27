@@ -1,8 +1,13 @@
-import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
+import { getBottomSpace } from "react-native-iphone-x-helper";
+import Animated from "react-native-reanimated";
+import { RectButton } from "react-native-gesture-handler";
 
-export const Container = styled(RectButton)`
+const ButtonAnimated = Animated.createAnimatedComponent(RectButton);
+
+export const AnimatedContainer = styled(Animated.View)``;
+
+export const Container = styled(ButtonAnimated)`
   width: 60px;
   height: 60px;
   border-radius: 30px;
