@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, interpolate, Extrapolate } from 'react-native-reanimated';
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
 import { Accessory } from '../../components/Accessory';
@@ -10,9 +10,11 @@ import { useSelector } from 'react-redux';
 import { ApplicationState } from '../../redux';
 import { StatusBar } from 'react-native';
 import { getAccessoryIcon } from '../../utils/accessoryIcon';
+import { useTheme } from 'styled-components';
 
 import {
   Container,
+  AnimatedHeader,
   Header,
   ImageSliderWrapper,
   Content,
@@ -36,6 +38,26 @@ export function CarDetails({ navigation }: CarDetailsProps) {
     (state: ApplicationState) => state.carReducer
   );
 
+  const theme = useTheme();
+
+  const scrollY = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler(event => {
+    scrollY.value = event.contentOffset.y;
+    console.log(event.contentOffset.y);
+  });
+
+  const headerStyleAnimated = useAnimatedStyle(() => {
+    return {
+      height: interpolate(scrollY.value, [0, 200], [200, 70], Extrapolate.CLAMP),
+    }
+  });
+
+  const sliderStyleAnimated = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(scrollY.value, [0, 150], [1, 0], Extrapolate.CLAMP),
+    }
+  });
+
   const handleGoBack = () => {
     navigation.goBack();
   }
@@ -47,15 +69,20 @@ export function CarDetails({ navigation }: CarDetailsProps) {
   return (
     <Container>
       <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
-      <Header>
-        <BackButton onPress={handleGoBack} />
-      </Header>
+      <AnimatedHeader style={[headerStyleAnimated, { position: 'absolute', overflow: 'hidden', zIndex: 1, backgroundColor: theme.colors.background_secondary }]}>
+        <Header>
+          <BackButton onPress={handleGoBack} />
+        </Header>
 
-      <ImageSliderWrapper>
-        <ImageSlider imagesUrl={carSelected.photos} />
-      </ImageSliderWrapper>
+        <ImageSliderWrapper style={sliderStyleAnimated}>
+          <ImageSlider imagesUrl={carSelected.photos} />
+        </ImageSliderWrapper>
+      </AnimatedHeader>
 
-      <Content>
+      <Content
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+      >
         <Details>
           <Description>
             <Brand>{carSelected.brand}</Brand>
@@ -75,6 +102,10 @@ export function CarDetails({ navigation }: CarDetailsProps) {
         </Accessories>
 
         <About>
+          {carSelected.about}
+          {carSelected.about}
+          {carSelected.about}
+          {carSelected.about}
           {carSelected.about}
         </About>
       </Content>
