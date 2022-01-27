@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, BackHandler } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
 import { ApplicationState, saveCarList, saveSelectedCar } from '../../redux';
-import { MainParamList, CarListModel } from '../../@types';
+import { MainParamList } from '../../@types';
 
 import { FloatingButton } from '../../components/FloatingButton';
 import { useTheme } from 'styled-components';
 
 import { Car } from '../../components/Car';
-import { Load } from '../../components/Load';
+import { AnimatedLoading } from '../../components/AnimatedLoading';
 import Logo from '../../assets/logo.svg';
 import CarSvg from '../../assets/car.svg';
 
@@ -71,6 +71,12 @@ export function Home({ navigation }: HomeProps) {
     };
   }, []);
 
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      return null;
+    });
+  }, []);
+
   const renderItem = ({ item, index }) => <Car onPress={() => handleCarDetails(index)} data={item} />;
 
   return (
@@ -78,14 +84,18 @@ export function Home({ navigation }: HomeProps) {
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
       <Header>
         <HeaderContent>
-          <Logo width={RFValue(108)} height={RFValue(12)} />
-          <TotalCars>
-            Total de {carList.length}{' '}
-            {carList.length > 1 ? 'carros' : 'carro'}
-          </TotalCars>
+          <Logo style={{ marginTop: 6 }} width={RFValue(108)} height={RFValue(12)} />
+          {
+            !loading && (
+              <TotalCars>
+                Total de {carList.length}{' '}
+                {carList.length > 1 ? 'carros' : 'carro'}
+              </TotalCars>
+            )
+          }
         </HeaderContent>
       </Header>
-      {loading ? <Load /> : (
+      {loading ? <AnimatedLoading /> : (
         <CarList
           data={carList}
           keyExtractor={(item) => item.id}

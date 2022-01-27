@@ -41,11 +41,6 @@ export function StackRoutes() {
       <Screen
         name="Splash"
         component={Splash}
-        options={{
-          headerShown: false,
-          ...TransitionPresets.SlideFromRightIOS,
-          gestureDirection: 'horizontal',
-        }}
       />
 
       <Screen
@@ -53,8 +48,7 @@ export function StackRoutes() {
         component={Home}
         options={{
           headerShown: false,
-          ...TransitionPresets.SlideFromRightIOS,
-          gestureDirection: 'horizontal',
+          gestureEnabled: false,
         }}
       />
 

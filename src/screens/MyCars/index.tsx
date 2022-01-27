@@ -6,7 +6,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
 import { Car } from '../../components/Car';
-import { Load } from '../../components/Load';
+import { AnimatedLoading } from '../../components/AnimatedLoading';
 import queryString from 'query-string';
 import requester from '../../services/requester';
 import services from '../../services/services';
@@ -103,7 +103,7 @@ export function MyCars({ navigation }: MyCarsProps) {
         </SubTitle>
       </Header>
       {loading ? (
-        <Load />
+        <AnimatedLoading />
       ) : cars === null || cars.length <= 0 ? (
         <EmptyContainer>
           <AntDesign
