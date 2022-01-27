@@ -6,6 +6,7 @@ export type RootStackParamList = {
 
 export type MainParamList = {
   Splash: undefined;
+  SignIn: undefined;
   Home: undefined;
   CarDetails: undefined;
   Scheduling: undefined;

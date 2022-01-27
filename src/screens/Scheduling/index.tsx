@@ -159,9 +159,10 @@ export function Scheduling({ navigation }: SchedulingProps) {
 
       <Footer>
         <Button
-          title={loading ? <Loading /> : 'Confirmar'}
+          title="Confirmar"
           onPress={handleConfirmRental}
           enabled={!!rentalPeriod.startFormatted}
+          loading={loading}
         />
       </Footer>
 

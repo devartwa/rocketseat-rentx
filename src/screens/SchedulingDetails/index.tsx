@@ -205,10 +205,11 @@ export function SchedulingDetails({ navigation }: SchedulingDetailsProps) {
 
       <Footer>
         <Button
-          title={loading || secondLoading ? <Loading /> : "Alugar agora"}
+          title="Alugar agora"
           color={theme.colors.success}
           onPress={handlePostRental}
           enabled={enabled}
+          loading={loading || secondLoading}
         />
       </Footer>
 
