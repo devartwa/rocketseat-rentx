@@ -1,5 +1,5 @@
 export default {
-  baseUrl: 'http://192.168.10.4:3333/',
+  baseUrl: "http://192.168.10.9:3333/",
   defaultTimeout: 10000,
-  maxRetry: 3
+  maxRetry: 3,
 };

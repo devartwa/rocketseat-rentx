@@ -12,6 +12,8 @@ import { SchedulingComplete } from '../screens/SchedulingComplete';
 import { MyCars } from '../screens/MyCars';
 import { Splash } from '../screens/Splash';
 import { SignIn } from '../screens/SignIn';
+import { SignUpFirstStep } from '../screens/SignUp/SignUpFirstStep';
+import { SignUpSecondStep } from '../screens/SignUp/SignUpSecondStep';
 
 const { Navigator, Screen } = createStackNavigator<MainParamList>();
 
@@ -47,6 +49,24 @@ export function StackRoutes() {
       <Screen
         name="SignIn"
         component={SignIn}
+        options={{
+          headerShown: false,
+          gestureEnabled: false,
+        }}
+      />
+
+      <Screen
+        name="SignUpFirstStep"
+        component={SignUpFirstStep}
+        options={{
+          headerShown: false,
+          gestureEnabled: false,
+        }}
+      />
+
+      <Screen
+        name="SignUpSecondStep"
+        component={SignUpSecondStep}
         options={{
           headerShown: false,
           gestureEnabled: false,

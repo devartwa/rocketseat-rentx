@@ -12,8 +12,6 @@ import { format } from 'date-fns';
 import { AlertModal } from '../../components/AlertModal';
 import services from '../../services/services';
 import requester from '../../services/requester';
-import { useSelector } from 'react-redux';
-import { ApplicationState } from '../../redux';
 
 import ArrowSvg from '../../assets/arrow.svg';
 
@@ -28,7 +26,6 @@ import {
   DateValue,
   Content,
   Footer,
-  Loading
 } from './styles';
 
 type SchedulingNavigationProp = StackNavigationProp<MainParamList, 'Scheduling'>;
@@ -42,10 +39,6 @@ interface RentalPeriodProps {
 }
 
 export function Scheduling({ navigation }: SchedulingProps) {
-  const { carSelected } = useSelector(
-    (state: ApplicationState) => state.carReducer
-  );
-
   const theme = useTheme();
   const [lastSelectedDate, setLastSelectedData] = useState<DayProps>({} as DayProps);
   const [selectedDates, setSelectedDates] = useState<SelectedDatesProps>({} as SelectedDatesProps);

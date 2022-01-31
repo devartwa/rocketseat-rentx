@@ -1,6 +1,6 @@
-import styled from 'styled-components/native';
-import Modal from 'react-native-modal';
-import { RFValue } from 'react-native-responsive-fontsize';
+import styled from "styled-components/native";
+import Modal from "react-native-modal";
+import { RFValue } from "react-native-responsive-fontsize";
 
 export const ModalContainer = styled(Modal)`
   margin: 16px;
@@ -29,18 +29,32 @@ export const CloseIconContainer = styled.TouchableOpacity`
   align-items: center;
 `;
 
-export const MessageContainer = styled.View`
+export const TitleContainer = styled.View`
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding-horizontal: 20px;
 `;
 
-export const Message = styled.Text`
+export const Title = styled.Text`
   font-size: ${RFValue(20)}px;
   font-weight: bold;
   text-align: center;
   color: ${({ theme }) => theme.colors.title};
-  font-family: ${({ theme }) => theme.fonts.secondary_500};
+  font-family: ${({ theme }) => theme.fonts.secondary_600};
+`;
+
+export const MessageContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+`;
+
+export const Message = styled.Text`
+  font-size: ${RFValue(16)}px;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.title};
+  font-family: ${({ theme }) => theme.fonts.primary_500};
 `;
 
 export const ButtonContainer = styled.View`

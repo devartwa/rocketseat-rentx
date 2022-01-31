@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components/native";
 import { RFValue } from "react-native-responsive-fontsize";
-import { Pressable } from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 interface Props {
   isFocused: boolean;
@@ -41,7 +41,7 @@ export const InputText = styled.TextInput<Props>`
     `};
 `;
 
-export const ShowPasswordButton = styled(Pressable)<Props>`
+export const ShowPasswordButton = styled(TouchableWithoutFeedback)<Props>`
   width: 55px;
   height: 56px;
   justify-content: center;
